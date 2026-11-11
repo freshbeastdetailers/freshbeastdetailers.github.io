@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<title>Fresh Beast — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,700;0,800;1,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0A;--card:#141414;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.16);--text:#F4F4F2;--muted:#B5B5B0;--dim:#9C9C97;--green:#19FF46;--gold:#E2B33C;--red:#FF8A80}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:Kanit,sans-serif;text-transform:uppercase;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(10,10,10,.9);backdrop-filter:blur(10px);z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+header h1{font-size:18px;letter-spacing:.06em}
+header h1 span{color:var(--green)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:24px 0}
+.tabs button{min-height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line2);background:transparent;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--green);border-color:var(--green);color:#0A0A0A}
+.tabs .n{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:6px;border-radius:10px;background:var(--gold);color:#0A0A0A;font-size:11px}
+.card{background:var(--card);border:1px solid var(--line2);border-radius:18px;padding:22px}
+.grid{display:grid;gap:14px}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}
+.stats .card small{display:block;color:var(--dim);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.stats .card b{font-family:Kanit,sans-serif;font-size:30px}
+@media(max-width:800px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.f{display:flex;flex-direction:column;gap:6px}
+.f label,.f legend{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+input,select,textarea{width:100%;min-height:46px;padding:10px 12px;border-radius:12px;border:1px solid var(--line2);background:#0A0A0A}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green)}
+.fg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fg .full{grid-column:1/-1}
+@media(max-width:640px){.fg{grid-template-columns:1fr}}
+.btn{min-height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--line2);background:transparent;font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.btn.g{background:var(--green);border-color:var(--green);color:#0A0A0A}
+.btn.s{min-height:36px;padding:0 14px;font-size:11px}
+.btn:disabled{opacity:.5;cursor:wait}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;inset:0;opacity:0;margin:0}
+.chip span{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border-radius:999px;border:1px solid var(--line2);font-size:13px;cursor:pointer}
+.chip input:checked+span{border-color:var(--gold);background:rgba(226,179,60,.14)}
+.list{display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item b{display:block}
+.item small{color:var(--dim)}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-right:6px;background:rgba(25,255,70,.14);color:var(--green)}
+.tag.y{background:rgba(226,179,60,.14);color:var(--gold)}
+.msg{min-height:20px;margin-top:10px;font-size:14px}
+.msg.e{color:var(--red)} .msg.ok{color:var(--green)}
+.login{max-width:420px;margin:80px auto}
+.muted{color:var(--dim)}
+.photo-prev{max-width:180px;border-radius:10px;margin-top:8px;display:none}
+[hidden]{display:none!important}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--green);letter-spacing:.1em;text-transform:uppercase}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(25,255,70,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(25,255,70,0)}100%{box-shadow:0 0 0 0 rgba(25,255,70,0)}}
+.toast{position:fixed;right:20px;top:80px;z-index:20;max-width:340px;padding:16px 18px;border-radius:14px;background:#111;border:1px solid var(--gold);box-shadow:0 20px 50px rgba(0,0,0,.6);font-size:14px}
+.toast b{display:block;color:var(--gold);margin-bottom:4px}
+.item.new{animation:flash 2.5s ease-out}
+@keyframes flash{0%{background:rgba(226,179,60,.25)}100%{background:transparent}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Fresh <span>Beast</span> · Admin</h1><div style="display:flex;gap:8px;align-items:center"><span class="live" id="live" hidden><i></i>Live</span><button class="btn s" id="alerts" hidden>Turn on alerts</button><button class="btn s" id="out" hidden>Sign out</button></div></div></header>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<main class="wrap">
+  <section class="login card" id="login">
+    <h2 style="font-size:24px;margin-bottom:6px">Admin sign in</h2>
+    <p class="muted" style="margin:0 0 18px">Owner and staff accounts only.</p>
+    <form id="lf" class="grid">
+      <div class="f"><label for="le">Email</label><input id="le" type="email" autocomplete="email" required></div>
+      <div class="f"><label for="lp">Password</label><input id="lp" type="password" autocomplete="current-password" required></div>
+      <button class="btn g" type="submit">Sign in</button>
+      <div class="msg e" id="lm" role="alert"></div>
+    </form>
+  </section>
+
+  <section id="app" hidden>
+    <div class="grid stats">
+      <div class="card"><small>Open requests</small><b id="stReq">0</b></div>
+      <div class="card"><small>Washes this month</small><b id="stMonth">0</b></div>
+      <div class="card"><small>Revenue this month</small><b id="stRev">J$0</b></div>
+      <div class="card"><small>Customers</small><b id="stCust">0</b></div>
+    </div>
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-t="req">Requests <span class="n" id="nReq">0</span></button>
+      <button role="tab" aria-selected="false" data-t="log">Log a wash</button>
+      <button role="tab" aria-selected="false" data-t="cust">Customers</button>
+    </div>
+
+    <div class="card" data-p="req">
+      <div class="list" id="reqList"></div>
+    </div>
+
+    <div class="card" data-p="log" hidden>
+      <form id="wf" class="fg">
+        <div class="f full"><label for="wc">Customer</label><select id="wc" required></select></div>
+        <div class="f"><label for="wd">Date</label><input id="wd" type="date" required></div>
+        <div class="f"><label for="wp">Package</label><select id="wp"></select></div>
+        <fieldset class="f full" style="border:0;padding:0;margin:0"><legend>Add-ons</legend><div class="chips" id="wa"></div></fieldset>
+        <div class="f"><label for="wm">Amount charged (J$)</label><input id="wm" type="number" min="0" step="100" required></div>
+        <div class="f"><label for="wt">Paid with Beast Tokens?</label><select id="wt"><option value="">No — cash / card</option></select></div>
+        <div class="f full"><label for="wf1">Verification photo</label><input id="wf1" type="file" accept="image/*" capture="environment" required><img class="photo-prev" id="wprev" alt="Selected photo"></div>
+        <div class="f full"><label for="wn">Notes (optional)</label><textarea id="wn" rows="2"></textarea></div>
+        <div class="full"><button class="btn g" type="submit" id="wsub">Save wash &amp; add tokens</button> <span class="muted" id="wtok"></span><div class="msg" id="wmsg" role="status"></div></div>
+      </form>
+    </div>
+
+    <div class="card" data-p="cust" hidden>
+      <input id="cs" placeholder="Search name or phone" style="margin-bottom:12px" aria-label="Search customers">
+      <div class="list" id="custList"></div>
+    </div>
+  </section>
+</main>
+
+<script>window.FB_SUPABASE={url:'https://esfsiocezibfnosfxtyr.supabase.co',key:'sb_publishable_c4fXXHVIn6HZla_3LfMN2w_AeUYQ2Wo'};</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+if(!window.supabase){document.querySelector('#lm').textContent='Can’t reach the database from here. Open this page on your hosted site.';return}
+const sb=supabase.createClient(FB_SUPABASE.url,FB_SUPABASE.key);
+const fmt=n=>(n||0).toLocaleString('en-US'), esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nice=s=>s?new Date(s+'T12:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'}):'';
+const PK=[['Beast Express Wash',2000],['Beast Clean & Go',3000],['Beast Premium Detail',5500],['Beast Full Detail',9000],['Small pickup',3000],['Double-cab pickup',3500],['Large pickup',4000],['Panel van',4000],['Rewash (free)',0]];
+const AD=[['Headlight restoration',3000],['Seat shampoo',2500],['Engine bay cleaning',2000],['Carpet shampoo',2000],['Pet hair removal',1500],['Leather conditioning',1500],['Odour treatment',1500],['Underbody wash',1500]];
+let customers=[], me=null;
+
+async function boot(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user){$('#login').hidden=false;$('#app').hidden=true;$('#out').hidden=true;return}
+  const {data:p}=await sb.from('profiles').select('is_admin').eq('id',user.id).single();
+  if(!p||!p.is_admin){$('#lm').textContent='This account is not an admin.';await sb.auth.signOut();return}
+  me=user;$('#login').hidden=true;$('#app').hidden=false;$('#out').hidden=false;
+  await Promise.all([loadCustomers(),loadRequests(),loadStats()]);
+  startLive();
+}
+$('#lf').addEventListener('submit',async e=>{e.preventDefault();$('#lm').textContent='';
+  const {error}=await sb.auth.signInWithPassword({email:$('#le').value.trim(),password:$('#lp').value});
+  if(error){$('#lm').textContent=error.message;return}boot()});
+$('#out').addEventListener('click',async()=>{await sb.auth.signOut();location.reload()});
+
+// Tabs
+$$('[role=tab]').forEach(t=>t.addEventListener('click',()=>{$$('[role=tab]').forEach(x=>x.setAttribute('aria-selected',x===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t.dataset.t)}));
+
+async function loadStats(){
+  const m=new Date();m.setDate(1);const from=m.toISOString().slice(0,10);
+  const {data}=await sb.from('washes').select('amount').gte('wash_date',from);
+  $('#stMonth').textContent=(data||[]).length;$('#stRev').textContent='J$'+fmt((data||[]).reduce((s,w)=>s+w.amount,0));
+}
+async function loadCustomers(){
+  const {data}=await sb.from('profiles').select('id,full_name,phone,is_admin').order('full_name');
+  customers=(data||[]).filter(c=>!c.is_admin);
+  $('#stCust').textContent=customers.length;
+  $('#wc').innerHTML='<option value="">Choose a customer…</option>'+customers.map(c=>`<option value="${c.id}">${esc(c.full_name||'(no name)')} · ${esc(c.phone)}</option>`).join('');
+  renderCustomers();
+}
+async function renderCustomers(){
+  const q=$('#cs').value.trim().toLowerCase();
+  const list=customers.filter(c=>!q||(c.full_name+' '+c.phone).toLowerCase().includes(q)).slice(0,100);
+  const bals=await Promise.all(list.map(c=>sb.rpc('token_balance',{uid:c.id}).then(r=>r.data||0)));
+  $('#custList').innerHTML=list.length?list.map((c,i)=>`<div class="item"><div><b>${esc(c.full_name||'(no name)')}</b><small>${esc(c.phone)}</small></div><div><span class="tag y">${fmt(bals[i])} tokens</span><button class="btn s" data-logfor="${c.id}">Log wash</button></div></div>`).join(''):'<p class="muted">No customers yet.</p>';
+}
+$('#cs').addEventListener('input',()=>{clearTimeout(window._cs);window._cs=setTimeout(renderCustomers,250)});
+$('#custList').addEventListener('click',e=>{const b=e.target.closest('[data-logfor]');if(!b)return;$('#wc').value=b.dataset.logfor;$('#wc').dispatchEvent(new Event('change'));$('[data-t=log]').click()});
+
+async function loadRequests(){
+  const {data}=await sb.from('requests').select('id,kind,title,details,preferred_date,preferred_time,status,created_at,customer_id,profiles(full_name,phone)').in('status',['requested','confirmed']).order('created_at',{ascending:true});
+  const n=(data||[]).length;$('#nReq').textContent=n;$('#stReq').textContent=n;
+  const label={booking:'Booking',rewash:'Rewash check-up',token_wash:'Token wash'};
+  $('#reqList').innerHTML=n?data.map(r=>`<div class="item"><div><span class="tag${r.kind==='rewash'?' y':''}">${label[r.kind]}</span>${r.status==='confirmed'?'<span class="tag">Confirmed</span>':''}<b>${esc(r.title)}</b><small>${esc(r.profiles?.full_name)} · ${esc(r.profiles?.phone)}${r.preferred_date?' · '+nice(r.preferred_date)+' '+esc(r.preferred_time||''):''}${r.details?' · '+esc(r.details).slice(0,160):''}</small></div><div class="acts">${r.status==='requested'?`<button class="btn s g" data-st="confirmed" data-id="${r.id}">Confirm</button>`:''}<button class="btn s" data-st="done" data-id="${r.id}">Done</button><button class="btn s" data-st="cancelled" data-id="${r.id}" data-kind="${r.kind}" data-details="${esc(r.details||'')}">Cancel</button></div></div>`).join(''):'<p class="muted">No open requests. </p>';
+}
+$('#reqList').addEventListener('click',async e=>{const b=e.target.closest('[data-st]');if(!b)return;b.disabled=true;
+  await sb.from('requests').update({status:b.dataset.st}).eq('id',b.dataset.id);
+  if(b.dataset.st==='cancelled'&&b.dataset.kind==='token_wash'){const m=(b.dataset.details||'').match(/Token redemption ([0-9a-f-]{36})/);if(m)await sb.from('redemptions').update({status:'cancelled'}).eq('id',m[1])}
+  loadRequests()});
+
+// Log wash form
+$('#wd').value=new Date().toISOString().slice(0,10);
+$('#wp').innerHTML=PK.map(([n,p])=>`<option value="${n}" data-p="${p}">${n}${p?' — J$'+fmt(p):''}</option>`).join('');
+$('#wa').innerHTML=AD.map(([n,p])=>`<label class="chip"><input type="checkbox" value="${n}" data-p="${p}"><span>${n} · J$${fmt(p)}</span></label>`).join('');
+function calc(){const tok=!!$('#wt').value;const base=+$('#wp').selectedOptions[0].dataset.p;const add=$$('#wa input:checked').reduce((s,c)=>s+ +c.dataset.p,0);
+  $('#wm').value=tok?add:base+add;$('#wtok').textContent='Customer earns '+Math.floor((+$('#wm').value||0)/100)+' tokens'}
+['#wp','#wt'].forEach(s=>$(s).addEventListener('change',calc));$('#wa').addEventListener('change',calc);
+$('#wm').addEventListener('input',()=>$('#wtok').textContent='Customer earns '+Math.floor((+$('#wm').value||0)/100)+' tokens');
+$('#wc').addEventListener('change',async()=>{const id=$('#wc').value;$('#wt').innerHTML='<option value="">No — cash / card</option>';if(!id)return;
+  const {data}=await sb.from('redemptions').select('id,reward,cost').eq('customer_id',id).eq('status','pending');
+  (data||[]).forEach(r=>$('#wt').insertAdjacentHTML('beforeend',`<option value="${r.id}">Yes — ${esc(r.reward)} (${r.cost} tokens)</option>`))});
+$('#wf1').addEventListener('change',()=>{const f=$('#wf1').files[0];const im=$('#wprev');if(f){im.src=URL.createObjectURL(f);im.style.display='block'}else im.style.display='none'});
+calc();
+$('#wf').addEventListener('submit',async e=>{e.preventDefault();const msg=$('#wmsg');msg.className='msg';msg.textContent='';
+  const cid=$('#wc').value, file=$('#wf1').files[0];
+  if(!cid||!file){msg.className='msg e';msg.textContent='Choose a customer and add a verification photo.';return}
+  const btn=$('#wsub');btn.disabled=true;
+  try{
+    const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+    const path=`${cid}/${Date.now()}.${ext}`;
+    const up=await sb.storage.from('wash-photos').upload(path,file,{contentType:file.type||'image/jpeg'});if(up.error)throw up.error;
+    const red=$('#wt').value;
+    const {error}=await sb.from('washes').insert({customer_id:cid,wash_date:$('#wd').value,package:$('#wp').value,addons:$$('#wa input:checked').map(c=>c.value),amount:+$('#wm').value||0,paid_with_tokens:!!red,photo_path:path,notes:$('#wn').value.trim()||null,created_by:me.id});
+    if(error)throw error;
+    if(red)await sb.from('redemptions').update({status:'used'}).eq('id',red);
+    msg.className='msg ok';msg.textContent='Saved. Tokens added to the customer’s account.';
+    $('#wf1').value='';$('#wprev').style.display='none';$('#wn').value='';$$('#wa input').forEach(c=>c.checked=false);$('#wc').dispatchEvent(new Event('change'));calc();loadStats();
+  }catch(x){msg.className='msg e';msg.textContent=x.message||'Could not save.'}
+  finally{btn.disabled=false}
+});
+// ---- New-request alerts ----
+let unseen=0, chan=null, ac=null;
+const label={booking:'New booking',rewash:'New rewash request',token_wash:'New token wash'};
+function chime(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime;[880,1320].forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.0001,t+i*.16);g.gain.exponentialRampToValueAtTime(.25,t+i*.16+.02);g.gain.exponentialRampToValueAtTime(.0001,t+i*.16+.35);o.connect(g).connect(ac.destination);o.start(t+i*.16);o.stop(t+i*.16+.4)})}catch(_){}}
+function setTitle(){document.title=(unseen?`(${unseen}) `:'')+'Fresh Beast — Admin'}
+function toast(t,d){const el=$('#toast');el.innerHTML=`<b>${esc(t)}</b>${esc(d)}`;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(()=>el.hidden=true,7000)}
+async function onNew(row){
+  unseen++;setTitle();chime();
+  const {data:p}=await sb.from('profiles').select('full_name,phone').eq('id',row.customer_id).single();
+  const who=p?`${p.full_name||'Customer'} · ${p.phone||''}`:'';
+  toast(label[row.kind]||'New request',`${row.title}${who?' — '+who:''}`);
+  if('Notification' in window&&Notification.permission==='granted'){try{new Notification('Fresh Beast — '+(label[row.kind]||'New request'),{body:`${row.title}${who?'\n'+who:''}`})}catch(_){}}
+  await loadRequests();
+  const first=document.querySelector('#reqList .item:last-child');if(first)first.classList.add('new');
+}
+function startLive(){
+  if(chan)return;
+  chan=sb.channel('requests-feed').on('postgres_changes',{event:'INSERT',schema:'public',table:'requests'},p=>onNew(p.new))
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'requests'},()=>loadRequests())
+    .subscribe(st=>{$('#live').hidden=st!=='SUBSCRIBED'});
+  setInterval(()=>{loadRequests();loadStats()},60000);
+  if('Notification' in window&&Notification.permission==='default')$('#alerts').hidden=false;
+}
+$('#alerts').addEventListener('click',async()=>{chime();try{await Notification.requestPermission()}catch(_){}$('#alerts').hidden=true});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){unseen=0;setTitle()}});
+document.addEventListener('click',()=>{if(!ac)try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(_){}} ,{once:true});
+boot();
+})();
+</script>
+</body>
+</html>
