@@ -705,6 +705,15 @@ a.cc:hover{border-color:var(--gold);transform:translateY(-3px)}
 @media (max-width:800px){.lg-grid{grid-template-columns:1fr}}
 .gate-priv{margin:8px 0 0;text-align:center;font-size:13px;color:var(--dim)}
 .gate-priv a{color:var(--muted);text-decoration:underline}
+
+/* ===== Floating call + WhatsApp ===== */
+.fabs{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:10px}
+.fabs .wa{position:static}
+.fab-call{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#0E0E0E;border:2px solid var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.5);transition:transform .2s,background .2s}
+.fab-call svg{width:22px;height:22px;stroke:var(--gold);fill:none}
+.fab-call:hover{transform:translateY(-2px);background:var(--gold)}
+.fab-call:hover svg{stroke:#0A0A0A}
+@media (max-width:420px){.fabs{right:14px;bottom:14px}}
 </style>
 </head>
 <body>
@@ -758,7 +767,6 @@ a.cc:hover{border-color:var(--gold);transform:translateY(-3px)}
       <a href="#contact" data-for="contact">Contact</a>
     </nav>
     <div class="hdr-cta">
-      <a class="hdr-phone" href="tel:+18765252174" aria-label="Call us at (876) 525-2174"><svg><use href="#i-phone"/></svg><span class="num">(876) 525-2174</span></a>
       <a class="btn btn-green btn-sm" href="#booking">Book a wash</a>
       <a class="acct-btn" id="acctBtn" href="#account" aria-label="My account"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span class="dot" id="acctDot"></span></a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
@@ -1478,7 +1486,10 @@ a.cc:hover{border-color:var(--gold);transform:translateY(-3px)}
   </div>
 </footer>
 
-<a class="wa" href="https://wa.me/18765252174" aria-label="WhatsApp Fresh Beast Detailers"><svg><use href="#i-wa"/></svg><span>WhatsApp us</span></a>
+<div class="fabs">
+  <a class="fab-call" href="tel:+18765252174" aria-label="Call Fresh Beast Detailers at (876) 525-2174" title="Call (876) 525-2174"><svg><use href="#i-phone"/></svg></a>
+  <a class="wa" href="https://wa.me/18765252174" aria-label="WhatsApp Fresh Beast Detailers"><svg><use href="#i-wa"/></svg><span>WhatsApp us</span></a>
+</div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
   <button id="lbClose" aria-label="Close photo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
